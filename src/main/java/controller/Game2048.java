@@ -15,7 +15,6 @@ import java.sql.Time;//計時工具
 import java.util.ArrayList; //動態陣列集合，用以暫存盤面的空網格
 import java.util.Random; //亂數產生器
 
-import javax.swing.Timer; //引入計時工具，用於處理畫面動態重新整理
 import javax.sound.sampled.Clip;//引訊剪輯物件，可把音樂檔反覆播放
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;//視窗框架元件，用於建立桌面應用程式主視窗
@@ -68,7 +67,7 @@ class GamePanel extends JPanel implements ActionListener{
 	private boolean gameOver=false; //遊戲失敗狀態標記為false
 	private boolean gameWon=false;//勝利狀態初始化為false
 	private final Random random = new Random(); //實體化亂數工具
-	private Timer timer; //計時器物件，用於刷新遊戲畫面
+	private Time time; //計時器物件，用於刷新遊戲畫面
 	private Clip bgmClip; //背景音樂控制物件，可啟動或關閉音樂
 	
 	private final Image titleBg = new ImageIcon("title_bg.png").getImage();
@@ -78,18 +77,17 @@ class GamePanel extends JPanel implements ActionListener{
 		//設定此面板的尺寸500*500像素
 		this.setPreferredSize(new Dimension(SCREEN_SIZE,SCREEN_SIZE));
 		//畫布的背景顏色(經典2048土黃)
-		this.setBackground(new Color(0xBBADA0));
+		this.setBackground(new Color(0xBBDA0));
 		//允許此面板獲取鍵盤焦點，用以接收玩家鍵盤輸入
 		this.setFocusable(true);
 		//掛載自訂的鍵盤監聽器，監控玩家操作
 		this.addKeyListener(new MyKeyAdapter());
-		timer = new Timer(16,this); 
-		//初始化計時器，每秒刷新60次畫面(16毫秒)
-		timer.start();//啟動計時器，讓 actionPerformed 迴圈開始執行
+		initGame();//配置第一局遊戲盤面
 	}
 	//新局初始化方法
-	private void startGame() {
-		score=0; //遊戲分數歸零		
+	private void initGame() {
+		score=0; //遊戲分數歸零
+		gameOver=false;//重設遊戲狀態:未失敗
 		gameWon = false;//重設遊戲狀態:未勝利
 		for(int r=0; r<GRID_SIZE;r++) //外迴圈遍歷盤面每一行
 		{
@@ -100,8 +98,6 @@ class GamePanel extends JPanel implements ActionListener{
 		}
 		spawnTile();//隨機投放第一個初始方塊
 		spawnTile();//隨機投放第二個初始方塊
-		state = GameState.RUNNING; //將遊戲狀態正式切換為進行中
-		playBGM("bgm.wav");//開始循環背景音樂
 		
 	}
 	//隨機生成新方塊
@@ -185,7 +181,6 @@ class GamePanel extends JPanel implements ActionListener{
 			//逐行高效複製記憶體陣列
 		}
 	}
-	
 	//用以判定遊戲是否結束
 	private void checkGameOver(){
 		if(gameWon) { //若達成勝利條件
@@ -249,77 +244,16 @@ class GamePanel extends JPanel implements ActionListener{
 		//切換為更小字體
 		
 	}
-	
 	//繪製主盤面數據
 	private void drawBoard(Graphics2D g2d) {
 		g2d.setColor(new Color(0x776E65));//設定文字顏色為深灰褐色
-		g2d.setFont(new Font("Microsoft JhengHei",Font.BOLD,24));
-		//設定分數文字字型
-		g2d.drawString("Score:"+ score, GRID_SIZE, 35);
-		//在左上角印出目前的累計得分
-		int startY=60; //將方塊網格起點Y軸訂在60像素處
 		
-		for(int r=0;r<GRID_SIZE;r++) { //控制列的雙層迴圈
-			for(int c=0;c<GRID_SIZE;c++) {//控制行的雙層迴圈
-				int value = board[r][c];//獲取數值
-				int x=GAP_SIZE+c*(TILE_SIZE + GAP_SIZE);
-				//計算方塊X座標
-				int y = startY + GAP_SIZE+r*(TILE_SIZE+GAP_SIZE);
-				//計算方塊Y座標
-				
-				g2d.setColor(getTileBackground(value));//動態獲取方塊背景色
-				g2d.fillRoundRect(x, y, TILE_SIZE, TILE_SIZE, 8, 8);//繪製圓角方塊
-				
-				if(value >0) { //如果格子有數字
-					g2d.setColor(getTileForeground(value));
-					//動態決定字體顏色
-					g2d.setFont(getTitleFont(value));
-					//動態調整字體大小防止爆框
-					
-					FontMetrics fm=g2d.getFontMetrics();
-					//獲取測量工具
-					String s = String.valueOf(value);
-					int textX= x+(TILE_SIZE-fm.stringWidth(s))/2;
-					//置中X計算
-					int textY = y+(TILE_SIZE-fm.getHeight())/2+fm.getAscent();
-					//置中Y計算
-					
-					g2d.drawString(s, textX, textY);//在方塊內部中央寫上數字
-				}				
-			}
-		}
+		
 	}
-	//繪製最後計分板畫面的方法
 	private void drawGameOverScreen(Graphics2D g2d) {
 		// TODO Auto-generated method stub
 		
 	}
-	private Font getTitleFont(int value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	private Color getTileForeground(int value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	private Color getTileBackground(int value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
-	private void playBGM(String string) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	
-
-
-	
-
-
 
 
 	private void stopBGM() {

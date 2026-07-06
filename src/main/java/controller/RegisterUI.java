@@ -183,20 +183,13 @@ public class RegisterUI extends JFrame {
 		clean.setBounds(258, 306, 87, 23);
 		panel_1.add(clean);
 		//判斷是否為管理員
-		if(me !=null)
+		if("Y".equals(me.getAdmin()))
 		{
-			if("Y".equals(me.getAdmin()))
-			{
-				lblNewLabel_7.setText("新增會員");
-				checkadmin=true;
-				admin.setVisible(true);
-				lblNewLabel_1_1.setVisible(true);
-			}else {
-				admin.setVisible(false);
-				lblNewLabel_1_1.setVisible(false);
-			}
-		}else
-		{
+			lblNewLabel_7.setText("新增會員");
+			checkadmin=true;
+			admin.setVisible(true);
+			lblNewLabel_1_1.setVisible(true);
+		}else {
 			admin.setVisible(false);
 			lblNewLabel_1_1.setVisible(false);
 		}

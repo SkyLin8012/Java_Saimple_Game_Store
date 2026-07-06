@@ -57,7 +57,7 @@ public class LoginUI extends JFrame {
 	 */
 	public LoginUI() {
 		//取得cookie
-		Member me=null;		
+		Member me=null;
 		me=(Member) Tool.readFile("member.txt");
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -102,7 +102,6 @@ public class LoginUI extends JFrame {
 		
 
 		//------event-------
-		
 		if(me!=null)
 		{
 			uid.setText(me.getUid());
@@ -185,18 +184,14 @@ public class LoginUI extends JFrame {
 		addmember.setBounds(113, 208, 182, 23);
 		panel_1.add(addmember);
 		//判斷是否為管理員
-		
-		if(me !=null)
-		{	
-			if("Y".equals(me.getAdmin()))
-			{
-				addmember.setVisible(false);
-			}else {
-				addmember.setVisible(true);
-				
-			}
+		if("Y".equals(me.getAdmin()))
+		{
+			addmember.setVisible(false);
+		}else {
+			addmember.setVisible(true);
+			
 		}
-	
+		
 		
 		JButton btnNewButton_2 = new JButton("登出");
 		btnNewButton_2.addMouseListener(new MouseAdapter() {

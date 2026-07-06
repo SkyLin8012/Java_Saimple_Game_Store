@@ -75,7 +75,7 @@ public class MemberUI extends JFrame {
 		Member me=null;
 		me=(Member) Tool.readFile("member.txt");
 		//載入方法
-		MemeberService ms =  new MemberServiceImpl();
+		MemeberService ms = (MemeberService) new MemberServiceImpl();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 587, 420);
@@ -214,6 +214,18 @@ public class MemberUI extends JFrame {
 		});
 		timer.start();
 		
+		JButton btnNewButton = new JButton("遊樂場");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				GameStoreUI form = new GameStoreUI();
+				form.setVisible(true);
+				dispose();
+			}
+		});
+		btnNewButton.setBounds(10, 10, 87, 23);
+		panel_1.add(btnNewButton);
+		
 		JButton btnNewButton_1 = new JButton("新增");
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
@@ -224,7 +236,7 @@ public class MemberUI extends JFrame {
 				//dispose();
 			}
 		});
-		btnNewButton_1.setBounds(10, 10, 87, 23);
+		btnNewButton_1.setBounds(105, 10, 87, 23);
 		panel_1.add(btnNewButton_1);
 		
 		JButton btnNewButton_3 = new JButton("回遊樂場");

@@ -1,6 +1,5 @@
 package util;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -17,23 +16,12 @@ public class Tool {
 	public static Object readFile(String Filename)
 	{
 		Object obj = null;
-		File file = new File(Filename);
 		try {
-			if(!file.exists())
-			{	
-				file.createNewFile();
-				return null;
-			}
-			if(file.length()>0)
-			{
 			FileInputStream fis = new FileInputStream(Filename);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			obj=ois.readObject();
-			ois.close();
-			fis.close();
-			}
 		} catch (FileNotFoundException e) {
-			System.out.println("【錯誤】找不到檔案，請確認檔案是否有放在 JAR 檔旁邊！");
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
